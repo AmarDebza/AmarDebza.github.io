@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tarifs et réservation — Activate (integration rig)</title>
+<link rel="preconnect" href="https://sdk.activate-test.smeetz.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>html,body{margin:0;padding:0}</style>
+</head>
+<body>
+
+<style>
+/* ── activate-games.fr look-alike host page (isolation stress rig) ─────────
+   Faithful to https://activate-games.fr/tarifs-et-reservation/:
+   fixed navy header, cyan marquee ribbon, hero, lavender body, white tarifs
+   card, navy features band, events pills, navy footer — PLUS a fixed bottom
+   CTA bar so the widget drawer must overlay BOTH high-z fixed bars. */
+/* hide the theme's own page title + break out of the content column (full bleed) */
+.wp-block-post-title { display:none; }
+/* collapse the theme's content-area top spacing so the hero meets the header */
+.wp-block-post-content, .entry-content, main .wp-block-group {
+  margin-block-start:0 !important; padding-top:0 !important; }
+main { padding-top:0 !important; margin-top:0 !important; }
+#ag-site { --ag-navy:#0b2140; --ag-navy2:#0d2750; --ag-cyan:#29c1e8; --ag-pink:#e84393;
+  --ag-lav:#e4e8fb; font-family:"Poppins","Segoe UI",system-ui,sans-serif; color:#12244a;
+  margin:0; width:100vw; margin-left:calc(50% - 50vw); }
+#ag-site *, #ag-site *::before, #ag-site *::after { box-sizing:border-box; }
+/* deliberately aggressive host rules — must NOT reach into the widget */
+#ag-site h1,#ag-site h2,#ag-site h3 { letter-spacing:.02em; margin:0; }
+#ag-site a { color:inherit; text-decoration:none; }
+
+/* fixed header — the classic embed killer */
+.ag-header { position:fixed; top:0; left:0; right:0; z-index:99999; height:70px;
+  background:var(--ag-navy); display:flex; align-items:center; gap:2.2rem;
+  padding:0 2.5rem; box-shadow:0 2px 18px rgba(0,0,0,.35); }
+.ag-logo { color:var(--ag-cyan); font-weight:800; font-size:1.6rem; letter-spacing:.28em; }
+.ag-nav { display:flex; gap:2rem; margin-left:auto; align-items:center; color:#dfe9ff;
+  font-weight:600; font-size:.95rem; }
+.ag-btn-ghost { border:2px solid var(--ag-cyan); color:var(--ag-cyan); padding:.55rem 1.2rem;
+  border-radius:6px; font-weight:700; }
+/* fixed bottom CTA bar — second overlay obstacle */
+.ag-bottombar { position:fixed; bottom:0; left:0; right:0; z-index:99998;
+  background:var(--ag-cyan); color:#06263f; text-align:center; padding:.6rem 1rem;
+  font-weight:700; letter-spacing:.05em; }
+
+.ag-hero { margin-top:70px; background:
+  linear-gradient(115deg, rgba(232,67,147,.35), transparent 45%),
+  repeating-linear-gradient(100deg, transparent 0 90px, rgba(60,255,140,.25) 90px 92px),
+  repeating-linear-gradient(80deg, transparent 0 130px, rgba(255,40,40,.2) 130px 132px),
+  linear-gradient(#071a33,#0d2750); padding:6rem 2rem 5.5rem; text-align:center; }
+.ag-hero h1 { color:#fff; font-size:clamp(2.4rem,6vw,4.2rem); font-weight:800;
+  text-transform:uppercase; letter-spacing:.04em; }
+.ag-ribbon { background:var(--ag-cyan); color:#06263f; font-weight:800; overflow:hidden;
+  white-space:nowrap; padding:.55rem 0; text-transform:uppercase; }
+.ag-ribbon > div { display:inline-block; animation:ag-marquee 18s linear infinite; }
+@keyframes ag-marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+.ag-tarifs { background:var(--ag-lav); padding:4rem 1.5rem 5rem; }
+.ag-card { max-width:1140px; margin:0 auto; background:#fff; border-radius:10px;
+  padding:2.2rem 2.5rem; box-shadow:0 10px 40px rgba(13,39,80,.10); }
+.ag-card-head { display:flex; gap:3rem; flex-wrap:wrap; margin-bottom:1.6rem; }
+.ag-card h2 { color:var(--ag-pink); font-size:1.9rem; font-weight:800; }
+.ag-card p { max-width:34rem; line-height:1.55; margin:.6rem 0 0; }
+
+.ag-features { background:var(--ag-navy2); color:#fff; padding:4.5rem 2rem;
+  display:flex; gap:4rem; justify-content:center; flex-wrap:wrap; text-align:center; }
+.ag-feature h3 { background:linear-gradient(90deg,var(--ag-pink),var(--ag-cyan));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  font-size:1.5rem; font-weight:800; }
+.ag-feature p { color:#cfe0ff; font-style:italic; margin:.6rem 0 0; }
+
+.ag-events { background:var(--ag-lav); padding:4.5rem 2rem; text-align:center; }
+.ag-events h2 { font-size:2rem; font-weight:800; }
+.ag-pills { margin-top:1.8rem; display:flex; gap:1.2rem; justify-content:center; flex-wrap:wrap; }
+.ag-pill { border:2px solid; border-image:linear-gradient(90deg,var(--ag-pink),var(--ag-cyan)) 1;
+  padding:.8rem 1.6rem; font-weight:700; }
+
+.ag-footer { background:var(--ag-navy); color:#cfe0ff; padding:3.5rem 2.5rem 5.5rem;
+  display:flex; gap:4rem; flex-wrap:wrap; justify-content:space-between; }
+.ag-footer .ag-logo { font-size:1.2rem; }
+.ag-footer ul { list-style:none; padding:0; margin:.4rem 0 0; line-height:2; font-size:.92rem; }
+</style>
+
+<div id="ag-site" class="alignfull">
+  <header class="ag-header">
+    <span class="ag-logo">ACTIVATE™</span>
+    <nav class="ag-nav">
+      <a href="#">Le jeu ▾</a><a href="#">Infos &amp; Tarifs ▾</a>
+      <a href="#">Offres de groupe ▾</a><a href="#">Questions ▾</a>
+      <a class="ag-btn-ghost" href="#">Bon cadeau</a><span>FR&nbsp;·&nbsp;EN</span>
+    </nav>
+  </header>
+
+  <section class="ag-hero"><h1>Tarifs et réservation</h1></section>
+  <div class="ag-ribbon"><div>
+    Joue au frais : nos salles sont climatisées&nbsp;&nbsp;•&nbsp;&nbsp;Joue au frais : nos salles sont climatisées&nbsp;&nbsp;•&nbsp;&nbsp;Joue au frais : nos salles sont climatisées&nbsp;&nbsp;•&nbsp;&nbsp;Joue au frais : nos salles sont climatisées&nbsp;&nbsp;•&nbsp;&nbsp;
+  </div></div>
+
+  <section class="ag-tarifs">
+    <div class="ag-card">
+      <div class="ag-card-head">
+        <div>
+          <h2>Tarifs</h2>
+          <p>Réserve en ligne pour garantir ton créneau. Nous t&rsquo;accueillons également
+          sans réservation, sous réserve de disponibilité.</p>
+        </div>
+      </div>
+      <!-- the widget renders the offers exactly where the real site shows 1h00 / 1h30 -->
+      <activate-booking
+        publishable-key="pub_be3e1faeb6f294e022d194a6ad1f5a54"
+        environment="test"
+        lang="fr"></activate-booking>
+    </div>
+  </section>
+
+  <section class="ag-features">
+    <div class="ag-feature"><h3>2 à 5 joueurs<br>par équipe</h3><p>Au-delà de 5,<br>faire plusieurs équipes</p></div>
+    <div class="ag-feature"><h3>à partir<br>de 6 ans</h3><p>Jusqu&rsquo;à 12 ans les joueurs doivent<br>être accompagnés d&rsquo;un adulte</p></div>
+    <div class="ag-feature"><h3>Défis accessibles<br>à tous</h3><p>Sans condition physique particulière.</p></div>
+  </section>
+
+  <section class="ag-events">
+    <h2>Activate booste vos événements</h2>
+    <div class="ag-pills">
+      <span class="ag-pill">Anniversaire</span><span class="ag-pill">EVJF / EVG</span>
+      <span class="ag-pill">Team building</span><span class="ag-pill">Collectivités</span>
+    </div>
+  </section>
+
+  <footer class="ag-footer">
+    <div><span class="ag-logo">ACTIVATE™</span>
+      <ul><li>Val d&rsquo;Europe — dès 6 ans</li><li>Jusqu&rsquo;à 12 joueurs par session</li></ul></div>
+    <div><strong>Infos</strong><ul><li>Le jeu</li><li>Tarifs</li><li>FAQ</li><li>Contact</li></ul></div>
+    <div><strong>Légal</strong><ul><li>CGV</li><li>Confidentialité</li><li>Cookies</li></ul></div>
+  </footer>
+
+  <div class="ag-bottombar">🎁 BON CADEAU — offre spéciale cette semaine</div>
+</div>
+
+<!-- ── Smeetz Activate embed ────────────────────────────────────────────────
+     1. GTM/dataLayer sink must exist BEFORE the widget boots, or the funnel
+        events have nowhere to land. In production this is the real GTM tag.
+     2. Plain `defer` script — NOT type="module". The bundle is an IIFE and
+        `document.currentScript` is always null inside a module script, which
+        breaks asset-base resolution so fonts 404 on every embedding site.
+     3. The element carries lang="fr"; it also falls back to <html lang>.
+-->
+<script>window.dataLayer = window.dataLayer || [];</script>
+<script defer src="https://sdk.activate-test.smeetz.com/activate-booking.js"></script>
+
+</body>
+</html>
