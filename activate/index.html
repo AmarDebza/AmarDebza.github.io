@@ -4,11 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tarifs et réservation — Activate (integration rig)</title>
+<!-- Google Tag Manager — this is what the real client page installs. The rig
+     plays the CLIENT's role: the container is host-owned; the widget only
+     pushes smtz_* events into the dataLayer this snippet creates. -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-M34N2W2W');</script>
+<!-- End Google Tag Manager -->
 <link rel="preconnect" href="https://sdk.activate-test.smeetz.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>html,body{margin:0;padding:0}</style>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M34N2W2W"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
 <style>
 /* ── activate-games.fr look-alike host page (isolation stress rig) ─────────
@@ -139,14 +152,14 @@ main { padding-top:0 !important; margin-top:0 !important; }
 </div>
 
 <!-- ── Smeetz Activate embed ────────────────────────────────────────────────
-     1. GTM/dataLayer sink must exist BEFORE the widget boots, or the funnel
-        events have nowhere to land. In production this is the real GTM tag.
+     1. The dataLayer sink is created by the REAL GTM tag in <head> now
+        (GTM-M34N2W2W) — it runs before the widget boots, so the funnel
+        events always have somewhere to land.
      2. Plain `defer` script — NOT type="module". The bundle is an IIFE and
         `document.currentScript` is always null inside a module script, which
         breaks asset-base resolution so fonts 404 on every embedding site.
      3. The element carries lang="fr"; it also falls back to <html lang>.
 -->
-<script>window.dataLayer = window.dataLayer || [];</script>
 <script defer src="https://sdk.activate-test.smeetz.com/activate-booking.js"></script>
 
 </body>
