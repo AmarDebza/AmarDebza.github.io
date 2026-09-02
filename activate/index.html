@@ -119,11 +119,12 @@ main { padding-top:0 !important; margin-top:0 !important; }
           sans réservation, sous réserve de disponibilité.</p>
         </div>
       </div>
-      <!-- the widget renders the offers exactly where the real site shows 1h00 / 1h30 -->
-      <activate-booking
-        publishable-key="pub_be3e1faeb6f294e022d194a6ad1f5a54"
-        environment="test"
-        lang="fr"></activate-booking>
+      <!-- the widget renders the offers exactly where the real site shows 1h00 / 1h30.
+           BARE ELEMENT ON PURPOSE — this is byte-for-byte the tag the client is given:
+           the key and the environment are compiled into the bundle, and the language
+           comes from <html lang="fr"> above. Adding attributes here would make the rig
+           test something the client will never run. -->
+      <activate-booking></activate-booking>
     </div>
   </section>
 
@@ -158,7 +159,14 @@ main { padding-top:0 !important; margin-top:0 !important; }
      2. Plain `defer` script — NOT type="module". The bundle is an IIFE and
         `document.currentScript` is always null inside a module script, which
         breaks asset-base resolution so fonts 404 on every embedding site.
-     3. The element carries lang="fr"; it also falls back to <html lang>.
+     3. No `integrity` / `crossorigin`: SRI forces a CORS-mode fetch and the
+        widget CDN answers no Access-Control-Allow-Origin to third parties
+        (AIR-CORS-01 / AIR-EMBED-01), so the script would not register at all.
+     4. This script tag and the bare <activate-booking> above are EXACTLY the
+        two lines handed to the client for the TEST environment — see
+        docs/reports/ACTIVATE-INTEGRATION-READINESS.md, "The embed snippet to
+        send the client". Keep them in sync: the rig is only worth anything
+        while it runs what the client runs.
 -->
 <script defer src="https://sdk.activate-test.smeetz.com/activate-booking.js"></script>
 
